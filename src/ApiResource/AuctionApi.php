@@ -38,7 +38,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
                 'summary' => 'Pobierz kolekcję zasobów aukcji / Retrieve the collection of Auction resources',
                 'description' => 'Ten punkt końcowy umożliwia pobranie kolekcji zasobów aukcji.'
             ],
-            //order: ['dateTime' => 'DESC']
+            order: ['dateTimeAdd' => 'DESC']
         ),
         new Post(
             openapiContext: [
@@ -73,7 +73,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
             security: 'is_granted("ROLE_USER")',
         )
     ],
-    paginationItemsPerPage: 40,
+    paginationItemsPerPage: 20,
     provider: EntityToDtoStateProvider::class,
     processor: EntityClassDtoStateProcessor::class,
     stateOptions: new Options(entityClass: Auction::class),
