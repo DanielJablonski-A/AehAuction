@@ -25,7 +25,7 @@
                 </a>
               </li>
               <li class="mp7g_oh">
-                <a class="mgn2_14 mp0t_0a mgmw_wo mqu1_21 mj9z_5r mli8_k4 mqen_m6 l1fas" :href="entrypoint">Dokumentacja
+                <a class="mgn2_14 mp0t_0a mgmw_wo mqu1_21 mj9z_5r mli8_k4 mqen_m6 l1fas" href="/api">Dokumentacja
                   API</a>
               </li>
               <!--              <li class="mp7g_oh">-->
@@ -54,6 +54,6 @@ import {inject} from "vue";
 import logoPath from "../images/logo.jpg";
 import {loadAuctionsList, loadNewAuction} from "../app";
 
-
 const tokens = inject('tokens');
+
 </script>

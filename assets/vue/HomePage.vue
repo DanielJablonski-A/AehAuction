@@ -26,5 +26,7 @@ const props = defineProps({
 // Using reactive references directly
 const user = ref(props.user);
 const tokens = ref(props.tokens);
+const entrypoint = ref(props.entrypoint);
 provide('tokens', tokens);
+provide('entrypoint', entrypoint);
 </script>
