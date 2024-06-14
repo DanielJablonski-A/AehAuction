@@ -44,7 +44,7 @@ export default {
 
     const fetchAuctions = (page = 1) => {
       console.log("Fetching auctions from API at page:", page);
-      axios.get(`http://127.0.0.1:8000/api/auctions?page=${page}`, {
+      axios.get(`/api/auctions?page=${page}`, {
         headers: {
           'accept': 'application/ld+json'
         }
