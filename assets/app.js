@@ -32,6 +32,11 @@ export const loadAuctionsList = () => {
 };
 
 export const loadNewAuction = (tokens) => {
+    if (tokens === null) {
+        alert("Prosimy się najpierw zalogować");
+        return;
+    }
+
     if (currentApp) {
         currentApp.unmount();
     }

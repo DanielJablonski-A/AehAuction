@@ -40,6 +40,16 @@
                   Wystaw nową aukcje
                 </a>
               </li>
+<!--              <li v-if="tokens" class="mp7g_oh">-->
+<!--                <a href="#" @click="loadNewAuction(tokens)" class="mgn2_14 mp0t_0a mgmw_wo mqu1_21 mj9z_5r mli8_k4 mqen_m6 l1fas">-->
+<!--                  Wystaw nową aukcję-->
+<!--                </a>-->
+<!--              </li>-->
+<!--              <li v-else class="mp7g_oh">-->
+<!--                <a href="/login_form" class="mgn2_14 mp0t_0a mgmw_wo mqu1_21 mj9z_5r mli8_k4 mqen_m6 l1fas">-->
+<!--                  Wystaw nową aukcję-->
+<!--                </a>-->
+<!--              </li>-->
             </ul>
           </nav>
         </div>

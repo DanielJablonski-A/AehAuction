@@ -59,15 +59,20 @@ import {computed, reactive, ref} from 'vue';
 import axios from 'axios';
 import NewAuctionAuctionsCategories from './NewAuctionAuctionsCategories.vue'
 import NewAuctionCourier from "./NewAuctionCourier.vue";
+import {loadAuctionsList} from "../app";
 
 const props = defineProps({
   tokens: {
     type: [String, Array, Object],
-    default: () => []  // Providing a default can help avoid undefined errors
+    default: () => []
   }
 });
 
-const firstToken = computed(() => props.tokens.length > 0 ? props.tokens[0] : 'No token available');
+if (props.tokens === null) {
+  alert("Prosimy się najpierw zalogować");
+}
+
+const firstToken = computed(() => props.tokens ? props.tokens[0] : null)
 
 const formData = reactive({
   auctionCategory: '',
@@ -92,9 +97,16 @@ const formData = reactive({
 const errors = ref([]);
 
 const submitAuction = () => {
+  console.log("Token used for submission:", firstToken.value);  // Debug log for checking the token
+
+  if (firstToken.value === null) {
+    alert("Prosimy się najpierw zalogować");
+    return;
+  }
+
   const config = {
     headers: {
-      'Authorization': 'Bearer ' + firstToken,
+      'Authorization': 'Bearer ' + firstToken,  // Ensure the token is correctly concatenated
       'Content-Type': 'application/json'
     }
   };
@@ -103,53 +115,31 @@ const submitAuction = () => {
       .then(response => {
         alert('Sukces! Aukcja została dodana.');
         console.log('Response:', response);
-        // ok jazda!
-        //
+        loadAuctionsList();
       })
       .catch(error => {
         console.error('Error submitting auction:', error);
-        let errorMessage = 'Wystąpił błąd podczas dodawania aukcji.';
-        // errors.value = []; // Clear previous errors
-        // if (error.response && error.response.data['hydra:description']) {
-        //   errors.value.push(error.response.data['hydra:description']);
-        // } else {
-        //   errors.value.push('Unknown error occurred, please try again.');
-        // }
-
-        // Sprawdź, czy błąd zawiera odpowiedź serwera
         if (error.response) {
-          // Serwer odpowiedział kodem stanu poza zakresem 2xx
-          console.log(error.response.data);
-          console.log(error.response.status);
-          console.log(error.response.headers);
-
-          if (error.response.status === 400) {
-            // More specific error message from the server if available
-            errorMessage = error.response.data['hydra:description'] || 'Błędne dane wejściowe.';
-          } else if (error.response.status === 401) {
-            errorMessage = 'Nieautoryzowany dostęp. Sprawdź swoje dane logowania.';
-          } else if (error.response.status === 500) {
-            errorMessage = 'Błąd serwera. Prosimy spróbować później.';
-          } else {
-            errorMessage = `Błąd: ${error.response.status}`;
-          }
-
           if (error.response.data.violations) {
             error.response.data.violations.forEach(violation => {
               errors.value.push(`${violation.propertyPath}: ${violation.message}`);
             });
+          } else {
+            // Domyślny komunikat o błędzie z serwera
+            errors.value.push(error.response.data['hydra:description'] || 'Błąd serwera.');
           }
-
         } else if (error.request) {
-          // Żądanie zostało wysłane, ale nie otrzymano odpowiedzi
-          errorMessage = 'Brak odpowiedzi od serwera. Prosimy spróbować później.';
+          // Brak odpowiedzi od serwera
+          errors.value.push('Brak odpowiedzi od serwera. Prosimy spróbować później.');
         } else {
-          // Coś poszło nie tak w trakcie tworzenia żądania
-          errorMessage = 'Błąd w trakcie wysyłania żądania. Prosimy spróbować później.';
+          // Błąd w trakcie ustawiania żądania
+          errors.value.push('Błąd w trakcie wysyłania żądania. Prosimy spróbować później.');
         }
 
-        //alert(errorMessage);
+        let errorMessage = 'Wystąpił błąd podczas dodawania aukcji: ' + error.message;
+        errors.value.push(errorMessage);
       });
 };
+
 </script>
 
